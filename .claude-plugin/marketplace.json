@@ -1,0 +1,59 @@
+{
+  "name": "foundry",
+  "owner": {
+    "name": "Piyush Satti"
+  },
+  "description": "Piyush's agentic infrastructure: memory curation, project-compass, review, orchestration, and dev-environment plugins.",
+  "plugins": [
+    {
+      "name": "crucible",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/piyushsatti/foundry.git",
+        "path": "plugins/crucible",
+        "ref": "release"
+      },
+      "description": "Lens x stance review system: consult (partner), audit (neutral single reviewer), hats (blind panel), and red-vs-blue (attack/verify pair) on a shared hat wardrobe."
+    },
+    {
+      "name": "devtools",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/piyushsatti/foundry.git",
+        "path": "plugins/devtools",
+        "ref": "release"
+      },
+      "description": "Dev-environment tooling: worktree-native lifecycle (add/check/archive/revive/reap) with memory wiring."
+    },
+    {
+      "name": "manifold",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/piyushsatti/foundry.git",
+        "path": "plugins/manifold",
+        "ref": "release"
+      },
+      "description": "KAOS project compass: a DB-canonical spec substrate with an MCP server exposing read/write tools over a project's goal graph."
+    },
+    {
+      "name": "meditate",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/piyushsatti/foundry.git",
+        "path": "plugins/meditate",
+        "ref": "release"
+      },
+      "description": "Reflective memory curation: pause \u2192 review \u2192 consolidate \u2192 release. Audits Claude memory + CLAUDE.md (+ serena if active), proposes dispositions via a read-only Opus curator agent, gates, and executes approved changes with archive-not-destroy safety."
+    },
+    {
+      "name": "plan-orchestrator",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/piyushsatti/foundry.git",
+        "path": "plugins/plan-orchestrator",
+        "ref": "release"
+      },
+      "description": "Orchestrate multi-agent plans with live dispatch telemetry. Bundles the progress-tracker MCP, the brief and subset scoping skills, and the full review capability (audit, hats, red-vs-blue + stance agents) composed from the shared library."
+    }
+  ]
+}

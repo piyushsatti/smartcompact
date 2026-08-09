@@ -1,0 +1,39 @@
+# The lint gate, pinned so it means the same thing here and on any machine.
+#
+# Without this file ruff falls back to whatever its current default rule set is,
+# and that set changes between releases. A gate that moves under you is not a
+# gate: it passes today, fails on somebody's newer ruff, and nobody can tell
+# whether the code moved or the tool did.
+#
+# ruff is development tooling only. `scripts/` still imports nothing beyond
+# pyyaml, because the build runs in repositories Foundry cannot see.
+#
+# Run both, over the same four paths, before committing Python:
+#
+#   uvx ruff check scripts tests .github/checks template
+#   uvx ruff format scripts tests .github/checks template
+#
+# `template` is in that list even though it is shipped content, because the one
+# Python file in it is the bootstrap stub, the single file copied by hand into
+# every plugin repository. Formatting it later is a change to a file that is
+# meant almost never to change, so it is formatted now, while no repository has
+# copied it yet.
+
+line-length = 110
+
+[lint]
+select = ["E4", "E7", "E9", "F"]
+
+# Two rules are left out on purpose, and both would do damage rather than
+# nothing.
+#
+# `I`, import sorting, would reorder the import block in each test module. That
+# order is a runtime fact and not a style choice: `tests.repos` is what puts
+# `scripts/` on sys.path, so importing `emitters` before it raises ImportError
+# at collection. Sorting the block is a fix that stops the suite from being
+# collectable at all.
+#
+# `RUF100`, unused noqa, would delete every `# noqa: E402` in the repository.
+# Those lines do sit after a sys.path insert and every pycodestyle tool reports
+# them; ruff alone chooses not to. The directive is true, and removing it makes
+# the file worse under anything else somebody points at this code.

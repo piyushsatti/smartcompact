@@ -1,0 +1,33 @@
+# Every line here names something this repository can actually produce. A fence
+# around a directory that does not exist reads as evidence the directory is
+# expected, and the last set of those outlived the monorepo they were written
+# for by several months.
+
+# ── never track, anywhere ──
+**/.credentials.json
+**/*.key
+**/*.pem
+**/*.token
+.DS_Store
+
+# ── written by running the tools in scripts/ ──
+__pycache__/
+*.pyc
+.ruff_cache/
+# scripts/build.py --out dist, and the same name in every plugin repository
+dist/
+
+# ── local to one machine, never to the repository ──
+.claude/
+.env
+.env.*
+*~
+.*.swp
+.vscode/
+.idea/
+
+# ── worktree machinery, managed by devtools:worktree ──
+/.worktrees/
+
+# ── agent-owned local context ──
+/CLAUDE.local.md
