@@ -12,12 +12,12 @@ description: A deliberate, state-aware compaction boundary for Claude Code.
 # a plugin that has none, and under `--strict` that warning is an error, so a
 # folder built without it fails a check somebody else runs.
 #
-# author:
-#   name: Your Name
-#   email: you@example.com
-# homepage: https://example.com/my-plugin
-# license: MIT
-# keywords: [review, testing]
+author:
+  name: Piyush Satti
+  email: piyushsatti@gmail.com
+homepage: https://github.com/piyushsatti/smartcompact
+license: MIT
+keywords: [claude-code, compaction, context, handoff, hooks]
 
 # The OLDEST Foundry this plugin works with.
 #
