@@ -1,0 +1,130 @@
+# What this plugin is and what it needs. One per repo, at the repo root.
+# The build tool reads this and nothing else to work out what to ship.
+
+id: smartcompact
+version: 0.1.0                    # this plugin's own version, owned by this repo
+description: A deliberate, state-aware compaction boundary for Claude Code.
+
+# Optional, and copied straight into every harness's manifest that has a place
+# for them. A key left out here is left out there: no emitter invents a value.
+#
+# `author` is the one worth filling in. Claude Code's own validator warns about
+# a plugin that has none, and under `--strict` that warning is an error, so a
+# folder built without it fails a check somebody else runs.
+#
+# author:
+#   name: Your Name
+#   email: you@example.com
+# homepage: https://example.com/my-plugin
+# license: MIT
+# keywords: [review, testing]
+
+# The OLDEST Foundry this plugin works with.
+#
+# Not an exact pin. "0.1.0" means "0.1.0 or any later release that keeps the
+# same first number". The build picks the newest version anything in the tree
+# actually asked for, never newer than that, and writes down what it picked.
+#
+# A plugin takes all of Foundry or none. There is no picking pieces.
+#
+# If the first number changes, something that used to work no longer does. The
+# build stops rather than trying, and names the migration document to read.
+foundry: 0.1.2
+
+# Where scripts/foundry.py clones that version from. Optional, and the default
+# is Foundry's own repository, so most plugins never write this line.
+#
+# It exists because a plugin that is not built against a published Foundry still
+# has to build: a checkout on this machine, a fork, a mirror inside a company.
+# Git clones a local directory as readily as a URL, so either works. The version
+# above still has to exist there as the tag v<version>.
+#
+# The FOUNDRY_SOURCE environment variable overrides this line, which is how CI
+# points at a checkout it already has without editing the manifest.
+# foundry_source: ../../foundry/foundry
+
+requires:
+  # Other plugins this one builds on. Each names an exact build, never a moving
+  # target like "latest": a pin has to mean the same thing tomorrow as today.
+  # `take` lists what gets copied in. Nothing else from that repo comes along.
+  plugins: []
+  # - id: review-library
+  #   pin: 4f2a9c1e88b0        # fingerprint of that plugin's source checkout,
+  #                            # NOT the `contents` value in its lock file, which
+  #                            # fingerprints what it shipped and is a different
+  #                            # number. Write any placeholder and build once:
+  #                            # the refusal reports the fingerprint on disk
+  #   path: ../review-library  # where to find that checkout at build time
+  #   take:
+  #     skills: [audit]
+  #     agents: [panelist]
+
+# Which agent harnesses this plugin is built for. One source, one version, one
+# folder per name below.
+#
+# Delete the key entirely and the answer is claude-code, which is exactly what
+# Foundry built before this key existed. With one name, or none, the folder the
+# build writes IS the plugin. With two or more it holds one complete folder per
+# harness, each with its own lock file, plus foundry.release.json listing every
+# folder's contents fingerprint and everything it had to leave out.
+#
+# `instructions` is the one name left commented out. That folder is an AGENTS.md
+# naming this plugin's skills and commands, so a repository holding neither
+# would ship a file that names nothing, and the build refuses rather than write
+# it. Uncomment the line once this plugin has its first skill or command.
+targets:
+  - claude-code
+
+# Losses agreed to in advance, one block per harness.
+#
+# A kind a harness cannot carry stops the build and names both. That is the
+# default and it is the right one: every failure in this space is otherwise
+# silent, and a package that installs and does less than it says is worse than
+# one that refuses. Naming the loss here is how you say you already know.
+#
+# Each drop below is a fact about the harness, not a preference. Agent Plugins
+# 1.0.0 covers skills and MCP servers and says commands, hooks, agents, rules
+# and LSP servers stay client-specific and are outside version 1. OpenCode has
+# no command format. Pi excludes MCP on purpose.
+#
+# Nothing here fires until this plugin actually holds one of those kinds, so
+# these lines are inert in a fresh repository and load-bearing the day content
+# arrives. Read the refusal before adding a line: for a plugin whose whole
+# product is an MCP server, the Pi folder is an empty wrapper.
+degrade: {}
+
+# What this plugin hands to whoever installs it. The build checks every entry
+# actually exists in the output, so this cannot drift into a claim that is not
+# true. Names here match directory names under skills/, agents/, commands/.
+provides:
+  skills: []
+  agents: []
+  commands: []
+
+# Anything here stays out of the shipped folder. Development-only material:
+# tests, notes, scratch, and the build tooling itself. The folder people
+# download should hold what they use and nothing else.
+#
+# `scripts` is on this list because it holds the bootstrap stub, which fetches
+# Foundry and runs the build. That is something this repository does, never
+# something the folder people install does. Remove the line only if this plugin
+# grows a top-level `scripts/` its users actually run, and then move the stub.
+#
+# `CLAUDE.md` is on this list because it holds instructions for working on this
+# plugin, not for using it, and because the instructions folder writes a file of
+# that name. Leaving it off makes the build refuse rather than pick a winner.
+#
+# Names here match top-level entries in this repository. Nothing nested is
+# matched, so this list cannot reach inside a directory.
+#
+# The `.gitkeep` files holding skills/, agents/ and commands/ open do not need a
+# line here. The build sweeps a dot file out of the top of a content directory
+# and drops the directory if that leaves it empty, because the folder people
+# install is not a git repository and an empty agents/ claims a surface this
+# plugin does not have.
+exclude:
+  - tests
+  - notes
+  - scripts
+  - .gitignore
+  - CLAUDE.md
