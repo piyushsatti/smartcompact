@@ -99,7 +99,10 @@ degrade: {}
 provides:
   skills: []
   agents: []
-  commands: []
+  # The .md is required and is not a typo. check_provides in Foundry's
+  # scripts/build.py tests (out / kind / item).exists(), and a command ships
+  # as a file, so a bare 'smartcompact' here would fail the build.
+  commands: [smartcompact.md]
 
 # Anything here stays out of the shipped folder. Development-only material:
 # tests, notes, scratch, and the build tooling itself. The folder people
@@ -128,3 +131,10 @@ exclude:
   - scripts
   - .gitignore
   - CLAUDE.md
+  # Lint tooling, and lint tooling's droppings. `ruff.toml` configures a
+  # development gate nobody who installs this plugin runs, and `.ruff_cache`
+  # is not even that: it appears the moment ruff is run in this tree and was
+  # shipping in the built folder, so whoever downloaded it got a cache of
+  # somebody else's lint run.
+  - ruff.toml
+  - .ruff_cache

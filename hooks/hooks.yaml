@@ -1,0 +1,43 @@
+# Foundry's neutral hook format: a bare list of rules, each a block naming
+# 'at' and 'run' at minimum. Translated per harness at build time into that
+# harness's own event vocabulary; see
+# .foundry/0.1.2/scripts/emitters/claude_code.py:translate_hooks and
+# MOMENT_EVENTS for what each moment below becomes on Claude Code.
+#
+# The moment key is 'at', never 'on': YAML 1.1 reads a bare 'on' as the
+# boolean true, and a rule keyed that way names no moment at all.
+#
+# Every rule declares its own timeout rather than inheriting a default.
+# turn-end fires on every turn and stays tight; session-start fires once and
+# can afford more room. before-compact sits between the two: rarer than every
+# turn, but a single session can hit more than one compaction boundary, so it
+# is not "once per session" either. None of the three needs 'match': each
+# script branches on what it receives on stdin.
+#
+# There is deliberately no session-end rule. map.md has exactly one writer,
+# and Pi ruled on 2026-08-16 that the writer is the boundary rather than the
+# end of a session: the map is then at its freshest at the one moment
+# anything reads it, which is session-start after a compaction. A session-end
+# writer would have been a second writer of the same file, racing the first
+# whenever two sessions ran in one project.
+#
+# before-compact's own timeout is the middle of three nested budgets, and
+# each has to sit strictly inside the one above it or the outer one expires
+# first and tears down whatever the inner one was in the middle of writing.
+# The measured hook budget this client actually allows is at least 300
+# seconds; this rule claims 120 of that; hooks/materialise.py caps its own
+# sub-agent subprocess at 90, so the sub-agent always dies first and
+# materialise.py always has time left to write its fallback rather than
+# being killed mid-write itself.
+
+- at: turn-end
+  run: hooks/zone.py
+  timeout: 10
+
+- at: session-start
+  run: hooks/inject.py
+  timeout: 30
+
+- at: before-compact
+  run: hooks/materialise.py
+  timeout: 120

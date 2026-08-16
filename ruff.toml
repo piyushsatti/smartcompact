@@ -6,18 +6,18 @@
 # whether the code moved or the tool did.
 #
 # ruff is development tooling only. `scripts/` still imports nothing beyond
-# pyyaml, because the build runs in repositories Foundry cannot see.
+# pyyaml, because the build runs in repositories Foundry cannot see, and
+# `hooks/` imports nothing at all beyond the standard library, because it runs
+# on whatever machine installs this plugin.
 #
-# Run both, over the same four paths, before committing Python:
+# Run both, over the same three paths, before committing Python:
 #
-#   uvx ruff check scripts tests .github/checks template
-#   uvx ruff format scripts tests .github/checks template
+#   uvx ruff check hooks scripts tests
+#   uvx ruff format hooks scripts tests
 #
-# `template` is in that list even though it is shipped content, because the one
-# Python file in it is the bootstrap stub, the single file copied by hand into
-# every plugin repository. Formatting it later is a change to a file that is
-# meant almost never to change, so it is formatted now, while no repository has
-# copied it yet.
+# The path list came from Foundry's template and named `.github/checks` and
+# `template`, which are Foundry's own directories and do not exist here, while
+# omitting `hooks/`, which is where this plugin's Python actually lives.
 
 line-length = 110
 
