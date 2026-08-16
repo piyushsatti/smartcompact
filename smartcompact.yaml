@@ -1,0 +1,20 @@
+# smartcompact's shipped default thresholds.
+#
+# soft and hard are fractions of the measured trigger point: the occupancy at
+# which this client actually compacts, not a fraction of the model's own
+# window. The model window never appears in a transcript and cannot be read
+# at all; the trigger can, because Claude Code writes compactMetadata.preTokens
+# at every boundary.
+#
+# Ruled 2026-08-16 against a corpus sweep at exactly these values: 43.5% of
+# turns landed green, 27.3% orange, 29.2% red. Median notice before the
+# trigger was 108 assistant turns at orange and 53 at red.
+#
+# hooks/lib/settings.py parses a file of this same flat "key: value" shape,
+# scalar lines only, no nesting and no lists, because no YAML parser is
+# assumed present on whatever machine installs this plugin. A person or
+# project overrides these two values by placing a file shaped like this one
+# at ${CLAUDE_PLUGIN_DATA}/smartcompact.yaml; an invalid override falls back
+# to these numbers and is recorded in that project's run.log.
+soft: 0.60
+hard: 0.80

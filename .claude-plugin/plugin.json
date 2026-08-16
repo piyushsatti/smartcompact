@@ -1,0 +1,18 @@
+{
+  "name": "smartcompact",
+  "version": "0.1.0",
+  "description": "A deliberate, state-aware compaction boundary for Claude Code.",
+  "author": {
+    "name": "Piyush Satti",
+    "email": "piyushsatti@gmail.com"
+  },
+  "homepage": "https://github.com/piyushsatti/smartcompact",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "compaction",
+    "context",
+    "handoff",
+    "hooks"
+  ]
+}

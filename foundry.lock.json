@@ -1,0 +1,12 @@
+{
+  "plugin": "smartcompact",
+  "version": "0.1.0",
+  "foundry": "0.1.2",
+  "foundry_chosen_by": "newest version any dependency asked for",
+  "built_with_foundry": "0.1.2",
+  "dependencies": [],
+  "took": [],
+  "target": "claude-code",
+  "dropped": [],
+  "contents": "919727347c41"
+}
